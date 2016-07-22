@@ -259,24 +259,17 @@ export const logout = (dispatch, firebase) => {
   unWatchUserProfile(firebase)
 }
 
-export const createUser = (dispatch, firebase, credentials, profile) =>
-  new Promise((resolve, reject) => {
-    dispatchLoginError(dispatch, null)
-    firebase.auth().createUser(credentials, (err, userData) => {
-      if (err) {
-        dispatchLoginError(dispatch, err)
-        return reject(err)
-      }
-
-      if (profile && firebase._.config.userProfile) {
-        firebase.database().ref().child(`${firebase._.config.userProfile}/${userData.uid}`).set(profile)
-      }
-
-      login(dispatch, firebase, credentials)
-        .then(() => resolve(userData.uid))
-        .catch(err => reject(err))
-    })
+export const createUser = (dispatch, firebase, credentials, profile) => {
+  const {email, password} = credentials;
+  firebase.auth().createUserWithEmailAndPassword(email, password).then((authData) => {
+    if (profile && firebase._.config.userProfile) {
+      firebase.database().ref().child(`${firebase._.config.userProfile}/${userData.uid}`).set(profile);
+    }
+  }).catch((err) => {
+    dispatchLoginError(dispatch, err);
+    return reject(err);
   })
+}
 
 export const resetPassword = (dispatch, firebase, email) => {
   dispatchLoginError(dispatch, null)
