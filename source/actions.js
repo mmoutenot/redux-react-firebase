@@ -261,13 +261,12 @@ export const logout = (dispatch, firebase) => {
 
 export const createUser = (dispatch, firebase, credentials, profile) => {
   const {email, password} = credentials;
-  firebase.auth().createUserWithEmailAndPassword(email, password).then((authData) => {
+  return firebase.auth().createUserWithEmailAndPassword(email, password).then((authData) => {
     if (profile && firebase._.config.userProfile) {
       firebase.database().ref().child(`${firebase._.config.userProfile}/${userData.uid}`).set(profile);
     }
   }).catch((err) => {
     dispatchLoginError(dispatch, err);
-    return reject(err);
   })
 }
 
