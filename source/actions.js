@@ -263,7 +263,7 @@ export const createUser = (dispatch, firebase, credentials, profile) => {
   const {email, password} = credentials;
   return firebase.auth().createUserWithEmailAndPassword(email, password).then((authData) => {
     if (profile && firebase._.config.userProfile) {
-      firebase.database().ref().child(`${firebase._.config.userProfile}/${userData.uid}`).set(profile);
+      firebase.database().ref().child(`${firebase._.config.userProfile}/${authData.uid}`).set(profile);
     }
   }).catch((err) => {
     dispatchLoginError(dispatch, err);
