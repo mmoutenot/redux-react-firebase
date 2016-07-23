@@ -4,7 +4,7 @@ import * as Actions from './actions'
 export default (config) => {
   return next => (reducer, initialState) => {
     const defaultConfig = {
-      userProfile: null
+      userProfile: 'users'
     }
     const store = next(reducer, initialState)
 
