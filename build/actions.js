@@ -281,13 +281,16 @@ var createUser = exports.createUser = function createUser(dispatch, firebase, cr
   var email = credentials.email;
   var password = credentials.password;
 
-  return firebase.auth().createUserWithEmailAndPassword(email, password).then(function (authData) {
+  var promise = firebase.auth().createUserWithEmailAndPassword(email, password);
+  promise.then(function (authData) {
     if (profile && firebase._.config.userProfile) {
       firebase.database().ref().child(firebase._.config.userProfile + '/' + authData.uid).set(profile);
     }
   }).catch(function (err) {
     dispatchLoginError(dispatch, err);
   });
+
+  return promise;
 };
 
 var resetPassword = exports.resetPassword = function resetPassword(dispatch, firebase, email) {
