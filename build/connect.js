@@ -124,8 +124,10 @@ exports.default = function () {
           var ref = firebase.ref;
           var helpers = firebase.helpers;
           var storage = firebase.storage;
+          var database = firebase.database;
+          var auth = firebase.auth;
 
-          this.firebase = _extends({ ref: ref, storage: storage }, helpers);
+          this.firebase = _extends({ ref: ref, storage: storage, database: database, auth: auth }, helpers);
 
           this._firebaseEvents = getEventsFromDefinition(data);
           (0, _actions.watchEvents)(firebase, dispatch, this._firebaseEvents);
